@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VELEN Blanks — Premium Blank Apparel & Accessories</title>
+  <meta name="description" content="VELEN Blanks — premium blank apparel for individuals and businesses" />
+  <link rel="icon" href="data:," />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { background: linear-gradient(180deg,#030303 0%,#080808 48%,#101010 100%); font-family:'Sora',system-ui,sans-serif; }
+    .line-card:hover { transform: translateY(-4px); }
+    .prod-fill { background-size: cover; }
+    .wm { font-weight:700; letter-spacing:-.04em; color:rgba(255,255,255,.07); }
+    ::selection{background:#d4af37;color:#000}
+    .btn-gold{
+      background:linear-gradient(180deg,#fbe6ad 0%,#ecce78 22%,#d9b449 48%,#b88a22 78%,#e3c463 100%);
+      color:#241a06; border:1px solid #a87c1e;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 4px rgba(120,86,10,.4), 0 8px 22px rgba(180,138,40,.22);
+    }
+    .btn-gold:hover{ filter:brightness(1.06) saturate(1.05); }
+    .btn-gold:active{ filter:brightness(.97); }
+    @property --snake-a { syntax:'<angle>'; inherits:false; initial-value:0deg; }
+    .snake-border{ position:relative; isolation:isolate; }
+    .snake-border::before{
+      content:""; position:absolute; inset:0; border-radius:inherit; padding:2px;
+      background:conic-gradient(from var(--snake-a),
+        rgba(212,175,55,0) 0deg, rgba(212,175,55,0) 230deg,
+        #9c7a1e 256deg, #e8c96a 292deg, #fff6d8 312deg, #e8c96a 332deg, #9c7a1e 360deg);
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor; mask-composite:exclude;
+      animation:snake-spin 2.4s linear infinite; pointer-events:none; z-index:6;
+    }
+    .snake-border.glow::before{ filter:drop-shadow(0 0 6px rgba(212,175,55,.55)); }
+    @keyframes snake-spin{ to{ --snake-a:360deg; } }
+  </style>
+</head>
+<body class="min-h-screen text-white">
+
+  <!-- NAV -->
+  <div class="sticky top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-[1600px] items-center justify-between px-4 py-4 sm:px-6 sm:py-5 lg:px-10">
+      <div class="flex items-center gap-3">
+        <button onclick="showPage('home')" class="mr-2 flex items-baseline gap-2 text-2xl font-semibold tracking-[0.14em] text-white sm:text-3xl sm:tracking-[0.18em] md:text-4xl">VELEN<span class="font-normal text-white/50">BLANKS</span></button>
+        <div class="hidden items-center gap-2 md:flex">
+          <button onclick="showPage('shop')" class="nav-pill">Shop</button>
+          <button onclick="showPage('collections')" class="nav-pill">Collections</button>
+          <button onclick="showPage('business')" class="nav-pill">For Business</button>
+          <button onclick="showPage('about')" class="nav-pill">About</button>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden items-center gap-3 xl:flex">
+          <button onclick="showPage('business')" class="nav-pill">Samples &amp; Bulk</button>
+          <span class="inline-flex h-11 items-center rounded-full border border-white/10 bg-white/[0.02] px-5 text-[11px] uppercase tracking-[0.22em] text-white/60">US / USD</span>
+        </div>
+        <button onclick="toggleBag(true)" class="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-white/80">👜<span id="bagCount" class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#d4af37] text-[10px] font-semibold text-black">0</span></button>
+        <button onclick="toggleMobile()" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-white/80 md:hidden">☰</button>
+      </div>
+    </div>
+    <!-- mobile menu -->
+    <div id="mobileMenu" class="hidden border-t border-white/10 px-6 py-4 md:hidden">
+      <div class="flex flex-col gap-2">
+        <button onclick="showPage('shop');toggleMobile()" class="nav-pill w-full">Shop</button>
+        <button onclick="showPage('collections');toggleMobile()" class="nav-pill w-full">Collections</button>
+        <button onclick="showPage('business');toggleMobile()" class="nav-pill w-full">For Business · Samples &amp; Bulk</button>
+        <button onclick="showPage('about');toggleMobile()" class="nav-pill w-full">About</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ===================== HOME ===================== -->
+    <section id="page-home" class="page">
+      <!-- HERO -->
+      <section class="relative min-h-[78vh] md:min-h-[88vh] overflow-hidden border-b border-white/10">
+        <div class="absolute inset-0" style="background:linear-gradient(120deg,#0a0a0a,#1a0606 55%,#0b0b0b);"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(212,175,55,0.22),transparent_38%)]"></div>
+        <div class="wm absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[28vw] leading-none select-none pointer-events-none">VELEN</div>
+        <div class="relative z-10 flex min-h-[78vh] md:min-h-[88vh] items-end justify-center px-5 pb-16 pt-14 text-center md:pb-24 md:pt-20 lg:px-10">
+          <div class="w-full max-w-5xl">
+            <p class="mb-4 text-[11px] uppercase tracking-[0.45em] text-white/58">Limited Release — SS26</p>
+            <h1 class="text-4xl font-semibold uppercase tracking-[0.04em] text-white sm:text-6xl md:text-7xl lg:text-8xl">The Drop</h1>
+            <div id="countdown" class="mt-8 flex flex-wrap items-center justify-center gap-3 text-2xl font-medium text-white md:gap-5 md:text-4xl"></div>
+            <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <button class="h-12 rounded-full bg-white px-8 font-medium text-black hover:bg-white/90" onclick="showPage('shop')">Shop the Drop</button>
+              <button class="h-12 rounded-full border border-white/20 bg-transparent px-8 text-white hover:bg-white/10" onclick="showPage('business')">Bulk &amp; Wholesale</button>
+            </div>
+            <p class="mt-8 text-[11px] uppercase tracking-[0.35em] text-white/62">Free shipping over $150 · Samples ship in 48h</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED -->
+      <section class="mx-auto max-w-7xl px-6 py-12 md:py-20 lg:px-10">
+        <div class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p class="text-sm uppercase tracking-[0.35em] text-white/50">Featured</p>
+            <h2 class="mt-3 text-4xl font-semibold text-white md:text-6xl">New this season.</h2>
+          </div>
+          <button class="rounded-full border border-white/20 bg-transparent px-5 py-2 text-white hover:bg-white/10" onclick="showPage('shop')">View All</button>
+        </div>
+        <div id="homeProducts" class="grid gap-6 md:grid-cols-2 lg:grid-cols-4"></div>
+      </section>
+
+      <!-- DUAL AUDIENCE -->
+      <section class="mx-auto max-w-7xl px-6 pb-4 lg:px-10">
+        <div class="grid gap-6 md:grid-cols-2">
+          <button class="line-card text-left transition" onclick="showPage('shop')">
+            <div class="h-full overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-10">
+              <p class="text-[11px] uppercase tracking-[0.28em] text-white/45">For Individuals</p>
+              <h3 class="mt-4 text-3xl font-semibold md:text-4xl">Shop direct</h3>
+              <p class="mt-4 max-w-md text-sm leading-6 text-white/62">Browse the full catalog, build your bag, and check out in minutes. Free shipping over $150.</p>
+              <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium">Start shopping <span>→</span></span>
+            </div>
+          </button>
+          <button class="line-card text-left transition" onclick="showPage('business')">
+            <div class="h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.16),transparent_40%),rgba(255,255,255,0.03)] p-10">
+              <p class="text-[11px] uppercase tracking-[0.28em] text-white/45">For Businesses</p>
+              <h3 class="mt-4 text-3xl font-semibold md:text-4xl">Samples &amp; bulk</h3>
+              <p class="mt-4 max-w-md text-sm leading-6 text-white/62">Request samples, get tiered volume pricing, add custom branding, or open a wholesale account.</p>
+              <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium">Request samples &amp; bulk pricing <span>→</span></span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- COLLECTIONS PREVIEW -->
+      <section class="mx-auto max-w-7xl px-6 py-12 md:py-20 lg:px-10">
+        <div class="mb-10">
+          <p class="text-sm uppercase tracking-[0.35em] text-white/50">Shop by Category</p>
+          <h2 class="mt-3 text-4xl font-semibold text-white md:text-6xl">Four lines, one studio.</h2>
+        </div>
+        <div id="homeCategories" class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4"></div>
+      </section>
+    </section>
+
+    <!-- ===================== SHOP ===================== -->
+    <section id="page-shop" class="page hidden">
+      <div class="mx-auto max-w-7xl px-6 py-12 md:py-20 lg:px-10">
+        <p class="text-sm uppercase tracking-[0.35em] text-white/50">Shop</p>
+        <h2 class="mt-3 text-4xl font-semibold text-white md:text-6xl">Everything we sell</h2>
+        <p class="mt-4 max-w-2xl text-sm leading-7 text-white/62 md:text-base">Every piece in the store across all categories.</p>
+        <div id="shopFilters" class="mt-10 flex flex-wrap gap-3"></div>
+        <div id="allProducts" class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- ===================== COLLECTIONS ===================== -->
+    <section id="page-collections" class="page hidden">
+      <div class="mx-auto max-w-7xl px-6 py-12 md:py-20 lg:px-10">
+        <div class="mb-12">
+          <p class="text-sm uppercase tracking-[0.35em] text-white/50">Collections</p>
+          <h2 class="mt-3 text-4xl font-semibold text-white md:text-6xl">Shop by line</h2>
+        </div>
+        <div id="collectionCards" class="grid gap-6 sm:grid-cols-2"></div>
+      </div>
+    </section>
+
+    <!-- ===================== COLLECTION (filtered) ===================== -->
+    <section id="page-collection" class="page hidden">
+      <div class="mx-auto max-w-7xl px-6 py-12 md:py-20 lg:px-10">
+        <p class="text-sm uppercase tracking-[0.35em] text-white/50">Collection</p>
+        <h2 id="collectionTitle" class="mt-3 text-4xl font-semibold text-white md:text-6xl"></h2>
+        <div id="collectionProducts" class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- ===================== PRODUCT ===================== -->
+    <section id="page-product" class="page hidden">
+      <div class="mx-auto max-w-7xl px-6 py-10 lg:px-10">
+        <button onclick="history.length>1?showPage('shop'):showPage('shop')" class="mb-6 text-sm text-white/55 hover:text-white">← Back to shop</button>
+        <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+          <div class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]">
+            <div id="productMainWrap" class="relative flex items-center justify-center p-6">
+              <div id="productMainImage" class="relative h-[64vw] max-h-[560px] sm:h-[480px] lg:h-[560px] w-full rounded-[1.5rem] flex items-center justify-center overflow-hidden">
+                <span id="productMainMark" class="wm text-[10rem]"></span>
+              </div>
+              <button class="absolute left-3 sm:left-10 rounded-full border border-white/15 bg-black/40 p-3 text-white backdrop-blur hover:bg-black/60" onclick="prevImage()">←</button>
+              <button class="absolute right-3 sm:right-10 rounded-full border border-white/15 bg-black/40 p-3 text-white backdrop-blur hover:bg-black/60" onclick="nextImage()">→</button>
+            </div>
+            <div id="productThumbs" class="grid grid-cols-2 gap-4 p-4"></div>
+          </div>
+          <div class="space-y-6">
+            <div id="productCategory" class="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.3em] text-white/80"></div>
+            <div>
+              <h1 id="productTitle" class="text-4xl font-semibold text-white md:text-6xl"></h1>
+              <p id="productPrice" class="mt-4 text-2xl text-white/90"></p>
+              <p id="productDesc" class="mt-6 text-base leading-8 text-white/70"></p>
+            </div>
+            <div>
+              <p class="mb-3 text-sm uppercase tracking-[0.22em] text-white/45">Size</p>
+              <div id="productSizes" class="flex flex-wrap gap-3"></div>
+            </div>
+            <div>
+              <p class="mb-3 text-sm uppercase tracking-[0.22em] text-white/45">Quantity</p>
+              <div class="flex w-fit items-center rounded-2xl border border-white/10 bg-white/[0.04]">
+                <button class="px-4 py-3 text-white/70" onclick="changeQuantity(-1)">−</button>
+                <span id="productQty" class="min-w-12 text-center text-sm font-medium">1</span>
+                <button class="px-4 py-3 text-white/70" onclick="changeQuantity(1)">+</button>
+              </div>
+            </div>
+            <div class="flex flex-col gap-4 sm:flex-row">
+              <button id="addBagBtn" class="h-12 flex-1 rounded-2xl btn-gold font-medium" onclick="addToBag()">Add to Bag</button>
+              <button id="buyNowBtn" class="h-12 flex-1 rounded-2xl border border-white/20 bg-transparent text-white hover:bg-white/10" onclick="buyNow()">Buy Now</button>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+              <p class="text-sm uppercase tracking-[0.22em] text-white/45">Need it in volume?</p>
+              <p class="mt-2 text-sm text-white/65">Order this piece in bulk or request a sample for your business.</p>
+              <button onclick="goBusinessFor()" class="mt-3 text-sm font-medium text-[#e8c96a] hover:underline">Request samples &amp; bulk pricing →</button>
+            </div>
+            <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+              <p class="text-sm uppercase tracking-[0.22em] text-white/45">Details</p>
+              <div id="productDetails" class="mt-4 space-y-3 text-sm text-white/70"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BUSINESS (Samples & Bulk) ===================== -->
+    <section id="page-business" class="page hidden">
+      <div class="mx-auto max-w-5xl px-6 py-12 md:py-20 lg:px-10">
+        <p class="text-sm uppercase tracking-[0.35em] text-white/50">Trade &amp; Wholesale</p>
+        <h2 class="mt-3 text-4xl font-semibold text-white md:text-6xl">Samples &amp; bulk orders</h2>
+        <p class="mt-4 max-w-2xl text-sm leading-7 text-white/62 md:text-base">Sample before you commit, scale to volume pricing, and add custom branding. Tell us what you need — we reply within one business day.</p>
+
+        <div class="mt-10 rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 md:p-10">
+          <div class="mb-7 flex rounded-2xl border border-white/10 p-1">
+            <button id="tabSamples" onclick="setB2BType('samples')" class="flex-1 rounded-xl px-4 py-3 text-sm font-medium transition">Request Samples</button>
+            <button id="tabBulk" onclick="setB2BType('bulk')" class="flex-1 rounded-xl px-4 py-3 text-sm font-medium transition">Bulk Order</button>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <input id="b2b_name" placeholder="Contact name" class="b2b-input" />
+            <input id="b2b_company" placeholder="Company" class="b2b-input" />
+            <input id="b2b_email" placeholder="Email" class="b2b-input" />
+            <input id="b2b_phone" placeholder="Phone (optional)" class="b2b-input" />
+            <select id="b2b_products" class="b2b-input">
+              <option>Shirts</option><option>Pants / Trousers</option><option>Bags</option>
+              <option>Hats</option><option>Mixed / Full range</option>
+            </select>
+            <select id="b2b_qty" class="b2b-input">
+              <option>Samples only (1–5 units)</option>
+              <option>25–100 units</option><option>100–500 units</option>
+              <option>500–1,000 units</option><option>1,000+ units</option>
+            </select>
+          </div>
+          <textarea id="b2b_notes" placeholder="Details — custom branding, timelines, sizing breakdown…" class="b2b-input mt-4 min-h-[110px] w-full resize-y"></textarea>
+          <button onclick="submitB2B()" class="mt-6 h-12 w-full rounded-full btn-gold font-medium">Send Enquiry</button>
+          <div id="b2bNotice" class="mt-6 hidden rounded-[1.5rem] border border-green-500/20 bg-green-500/10 p-6 text-green-100">Enquiry received. Our trade team will be in touch within one business day with samples and pricing.</div>
+        </div>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-6"><p class="text-2xl font-semibold">48h</p><p class="mt-1 text-sm text-white/55">Samples shipped</p></div>
+          <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-6"><p class="text-2xl font-semibold">25+</p><p class="mt-1 text-sm text-white/55">Min. bulk units</p></div>
+          <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-6"><p class="text-2xl font-semibold">Custom</p><p class="mt-1 text-sm text-white/55">Branding &amp; labels</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section id="page-about" class="page hidden">
+      <div class="mx-auto max-w-5xl px-6 py-12 md:py-20 lg:px-10">
+        <div class="rounded-[2rem] border border-white/10 bg-white/[0.03] p-10 md:p-14">
+          <p class="text-sm uppercase tracking-[0.35em] text-white/50">About</p>
+          <h2 class="mt-4 text-4xl font-semibold text-white md:text-6xl">Premium blanks, made to build on.</h2>
+          <p class="mt-6 max-w-3xl text-base leading-8 text-white/68 md:text-lg">VELEN Blanks designs and produces premium blank shirts, trousers, bags, and hats — sold one at a time to individuals and at scale to the brands, studios, and teams that print, embroider, and build on them. This storefront is structured like a real shop: page views, a working bag, product galleries, size selection, checkout, and a dedicated trade enquiry flow ready to connect to Stripe or a backend.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CHECKOUT ===================== -->
+    <section id="page-checkout" class="page hidden">
+      <div class="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+        <div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+          <div class="rounded-[2rem] border border-white/10 bg-white/[0.03] p-8">
+            <p class="text-sm uppercase tracking-[0.35em] text-white/50">Checkout</p>
+            <h2 class="mt-4 text-4xl font-semibold text-white">Order Summary</h2>
+            <div id="checkoutItems" class="mt-8 space-y-4"></div>
+            <div class="mt-8 flex items-center justify-between border-t border-white/10 pt-6 text-lg text-white"><span>Subtotal</span><span id="checkoutSubtotal" class="font-semibold">$0</span></div>
+          </div>
+          <div class="rounded-[2rem] border border-white/10 bg-white/[0.03] p-8">
+            <p class="text-sm uppercase tracking-[0.35em] text-white/50">Payment</p>
+            <h2 class="mt-4 text-4xl font-semibold text-white">Secure Checkout</h2>
+            <p class="mt-4 text-sm leading-7 text-white/65">Pay by card, Apple Pay, or Google Pay. You'll be taken to Stripe's encrypted checkout to enter payment &mdash; we never see or store your card details.</p>
+            <div class="mt-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/70">
+              <svg viewBox="0 0 24 24" class="h-5 w-5 text-[#d4af37]" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <span>Secured by Stripe &middot; PCI&#8209;compliant</span>
+            </div>
+            <button id="payBtn" class="mt-6 h-12 w-full rounded-full btn-gold font-medium disabled:opacity-60" onclick="checkoutWithStripe()">Pay with Stripe</button>
+            <p class="mt-3 text-center text-xs text-white/40">You'll be redirected to complete payment.</p>
+            <div id="payError" class="mt-6 hidden rounded-[1.5rem] border border-amber-400/30 bg-amber-400/10 p-5 text-sm leading-6 text-amber-100">Couldn't reach the payment server. Stripe needs the included <span class="font-medium">create-checkout-session</span> function deployed with your secret key &mdash; see the setup notes. Until then, real payments can't be processed.</div>
+            <div id="orderNotice" class="mt-6 hidden rounded-[1.5rem] border border-green-500/20 bg-green-500/10 p-5 text-green-100">Payment complete &mdash; thank you! Your order is confirmed and a receipt has been emailed to you.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/10">
+    <div class="mx-auto grid max-w-7xl gap-8 px-6 py-14 lg:grid-cols-4 lg:px-10">
+      <div>
+        <p class="flex items-baseline gap-2 text-3xl font-semibold tracking-[0.18em]">VELEN<span class="font-normal text-white/50">BLANKS</span></p>
+        <p class="mt-4 max-w-xs text-sm text-white/55">Premium blank apparel &amp; accessories for individuals and the businesses that build on them.</p>
+      </div>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-white/45">Shop</p>
+        <div class="mt-4 flex flex-col gap-2 text-sm text-white/70">
+          <button class="text-left hover:text-white" onclick="openCollection('Shirts')">Shirts</button>
+          <button class="text-left hover:text-white" onclick="openCollection('Pants')">Pants</button>
+          <button class="text-left hover:text-white" onclick="openCollection('Bags')">Bags</button>
+          <button class="text-left hover:text-white" onclick="openCollection('Hats')">Hats</button>
+        </div>
+      </div>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-white/45">Trade</p>
+        <div class="mt-4 flex flex-col gap-2 text-sm text-white/70">
+          <button class="text-left hover:text-white" onclick="goBusinessType('samples')">Request samples</button>
+          <button class="text-left hover:text-white" onclick="goBusinessType('bulk')">Bulk orders</button>
+          <button class="text-left hover:text-white" onclick="goBusinessType('bulk')">Custom branding</button>
+        </div>
+      </div>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-white/45">Newsletter</p>
+        <div class="mt-4 flex overflow-hidden rounded-full border border-white/15">
+          <input id="newsEmail" placeholder="Email address" class="flex-1 bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-white/35" />
+          <button onclick="subscribe()" class="bg-white px-5 text-sm font-medium text-black">Join</button>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/10 py-5 text-center text-[11px] uppercase tracking-[0.18em] text-white/40">© 2026 VELEN Blanks · velenblanks.com · All prices USD</div>
+  </footer>
+
+  <!-- BAG DRAWER -->
+  <div id="bagOverlay" class="fixed inset-0 z-50 hidden bg-black/70" onclick="toggleBag(false)"></div>
+  <aside id="bagDrawer" class="fixed right-0 top-0 z-50 flex h-full w-full max-w-md translate-x-full flex-col border-l border-white/10 bg-[#0b0b0b] shadow-2xl transition-transform duration-300">
+    <div class="flex items-center justify-between border-b border-white/10 px-6 py-5">
+      <h2 class="text-sm font-medium uppercase tracking-[0.28em] text-white/80">Your Bag</h2>
+      <button class="text-xl leading-none text-white/45 hover:text-white" onclick="toggleBag(false)">✕</button>
+    </div>
+    <div id="bagItems" class="flex-1 overflow-y-auto px-6 divide-y divide-white/[0.07]"></div>
+    <div class="border-t border-white/10 px-6 py-5">
+      <div class="mb-1 flex items-center justify-between text-sm"><span class="text-white/55">Subtotal</span><span id="bagSubtotal" class="text-white">$0</span></div>
+      <p class="mb-4 text-xs text-white/35">Shipping &amp; taxes calculated at checkout.</p>
+      <button class="h-12 w-full rounded-full bg-white text-sm font-medium uppercase tracking-[0.12em] text-black hover:bg-white/90" onclick="toggleBag(false); showPage('checkout');">Checkout</button>
+    </div>
+  </aside>
+
+  <!-- TOAST -->
+  <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 translate-y-24 rounded-full border border-[#d4af37] bg-black px-6 py-3 text-sm font-medium text-white opacity-0 transition-all duration-300"></div>
+
+  <style>
+    .nav-pill{ display:inline-flex;height:2.75rem;align-items:center;justify-content:center;border-radius:9999px;
+      border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.02);padding:0 1.25rem;
+      font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.82);transition:.2s }
+    .nav-pill:hover{ border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff }
+    .b2b-input{ height:3rem;border-radius:1rem;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);
+      padding:0 1rem;color:#fff;outline:none }
+    .b2b-input::placeholder{ color:rgba(255,255,255,.35) }
+    textarea.b2b-input{ height:auto;padding:.85rem 1rem }
+    select.b2b-input option{ color:#000 }
+  </style>
+
+  <script>
+    const launchDate = new Date('2026-08-15T00:00:00');
+
+    const sizesFor = (cat)=> cat==='Bags' ? ['One Size'] : cat==='Hats' ? ['S/M','L/XL','One Size'] : ['S','M','L','XL'];
+
+    const products = [
+      {slug:'brushed-oxford', title:'Brushed Oxford Shirt', price:128, category:'Shirts', c1:'#cbb89a', c2:'#564633', tag:'New', desc:'A clean brushed-cotton oxford with a relaxed modern fit and tonal stitching.', details:['Heavyweight brushed cotton','Mother-of-pearl buttons','Relaxed modern fit','Tonal embroidery']},
+      {slug:'linen-camp', title:'Linen Camp Collar', price:142, category:'Shirts', c1:'#dcd3c2', c2:'#6f6753', desc:'Open camp collar in airy washed linen for an elevated warm-weather look.', details:['100% washed linen','Open camp collar','Boxy drape','Coconut buttons']},
+      {slug:'flannel-overshirt', title:'Heavy Flannel Overshirt', price:168, category:'Shirts', c1:'#6f5b4a', c2:'#221b14', tag:'Best seller', desc:'A heavyweight brushed flannel built to layer as a shirt or light jacket.', details:['Brushed double-weave','Chest utility pockets','Layering fit','Matte horn buttons']},
+      {slug:'poplin-tunic', title:'Poplin Tunic', price:118, category:'Shirts', c1:'#e3ddd0', c2:'#7a735f', desc:'A long-line poplin tunic with a soft hand and minimal branding.', details:['Crisp cotton poplin','Long-line cut','Side vents','Hidden placket']},
+      {slug:'pleated-wool', title:'Pleated Wool Trouser', price:188, category:'Pants', c1:'#4a463d', c2:'#16140f', tag:'New', desc:'Single-pleat wool-blend trouser with a tailored drape and clean break.', details:['Wool-blend suiting','Single forward pleat','Tailored taper','Hook-and-bar closure']},
+      {slug:'carpenter-canvas', title:'Carpenter Canvas Pant', price:156, category:'Pants', c1:'#a98e63', c2:'#4d3f26', desc:'A relaxed carpenter pant in rugged organic canvas with utility detailing.', details:['Organic cotton canvas','Carpenter loops','Relaxed straight leg','Triple-stitched seams']},
+      {slug:'tapered-linen', title:'Tapered Linen Trouser', price:164, category:'Pants', c1:'#d8cdb6', c2:'#6f654c', desc:'A breathable tapered linen trouser with a drawstring waist.', details:['Garment-washed linen','Drawcord waist','Tapered leg','Slant pockets']},
+      {slug:'selvedge-denim', title:'Relaxed Selvedge Denim', price:198, category:'Pants', c1:'#41506b', c2:'#161d29', tag:'Best seller', desc:'Relaxed selvedge denim in a raw indigo that fades beautifully with wear.', details:['14oz selvedge denim','Raw indigo','Relaxed straight leg','Branded leather patch']},
+      {slug:'waxed-tote', title:'Waxed Tote', price:174, category:'Bags', c1:'#7a6347', c2:'#291f12', desc:'A structured waxed-canvas tote with leather handles and a roomy interior.', details:['Waxed cotton canvas','Full-grain leather handles','Interior zip pocket','Magnetic top closure']},
+      {slug:'leather-weekender', title:'Leather Weekender', price:340, category:'Bags', c1:'#6e4d34', c2:'#2a1c10', tag:'Premium', desc:'A full-grain leather weekender sized for two days away.', details:['Full-grain leather','Brass hardware','Shoe compartment','Detachable strap']},
+      {slug:'field-crossbody', title:'Field Crossbody', price:138, category:'Bags', c1:'#8a7c64', c2:'#393326', desc:'A compact everyday crossbody in water-resistant ripstop.', details:['Water-resistant ripstop','Adjustable webbing strap','Three compartments','Low-profile fit']},
+      {slug:'felted-cap', title:'Felted Wool Cap', price:78, category:'Hats', c1:'#5a5246', c2:'#201d18', desc:'A structured six-panel cap in pressed felted wool.', details:['Felted wool','Structured crown','Antique-brass buckle','Satin lining']},
+      {slug:'canvas-camp-hat', title:'Canvas Camp Hat', price:64, category:'Hats', c1:'#b6a684', c2:'#5f5538', tag:'New', desc:'A packable wide-brim camp hat in washed cotton canvas.', details:['Washed cotton canvas','Packable brim','Vented eyelets','Adjustable chin cord']},
+      {slug:'watch-beanie', title:'Knit Watch Beanie', price:52, category:'Hats', c1:'#7d8473', c2:'#363b2f', desc:'A ribbed merino watch beanie with a folded cuff.', details:['Extra-fine merino','Ribbed knit','Folded cuff','Woven label']},
+    ];
+    products.forEach(p=>{ p.accent='#d4af37'; p.sizes=sizesFor(p.category);
+      p.images=[{label:'Front View',c1:p.c1,c2:p.c2},{label:'Back View',c1:p.c2,c2:p.c1}]; });
+
+    const categories = ['Shirts','Pants','Bags','Hats'];
+
+    let bag = [];
+    let currentProduct = products[0];
+    let currentImageIndex = 0, currentSize = products[0].sizes[0], currentQty = 1;
+    let shopFilter = 'All';
+
+    /* ===== STRIPE CONFIG — replace with your own values ===== */
+    const STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_WITH_YOUR_PUBLISHABLE_KEY';
+    const CHECKOUT_ENDPOINT = '/.netlify/functions/create-checkout-session';
+    /* ======================================================== */
+
+    /* ===== WHERE ENQUIRIES GO ===== */
+    const ENQUIRY_EMAIL = 'velenblanks@gmail.com';
+    const FORMSPREE_ENDPOINT = ''; // optional: paste a Formspree URL to auto-email; otherwise opens the visitor's mail app to ENQUIRY_EMAIL
+    /* ============================== */
+
+    const fmt = v => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
+    const grad = (a,b)=>`background:linear-gradient(150deg,${a},${b})`;
+
+    function showPage(page){
+      document.querySelectorAll('.page').forEach(el=>el.classList.add('hidden'));
+      const t=document.getElementById('page-'+page); if(t) t.classList.remove('hidden');
+      if(page==='checkout') renderCheckout();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    function toggleMobile(){ document.getElementById('mobileMenu').classList.toggle('hidden'); }
+
+    function productCard(p){
+      return `<button class="line-card text-left transition" onclick="openProduct('${p.slug}')">
+        <div class="h-full overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] transition hover:border-white/20 hover:bg-white/[0.05]">
+          <div class="relative aspect-[4/5] overflow-hidden" style="${grad(p.c1,p.c2)}">
+            ${p.tag?`<span class="absolute left-4 top-4 rounded-full bg-[#d4af37] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-black">${p.tag}</span>`:''}
+            <span class="wm absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[6rem]">${p.title.charAt(0)}</span>
+          </div>
+          <div class="space-y-3 p-6">
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-white/45"><span>${p.category}</span><span>${fmt(p.price)}</span></div>
+            <h3 class="text-2xl font-semibold text-white">${p.title}</h3>
+            <p class="text-sm leading-6 text-white/62">${p.desc}</p>
+            <div class="flex items-center gap-2 pt-2 text-sm font-medium text-white"><span>Open Product</span><span>→</span></div>
+          </div>
+        </div></button>`;
+    }
+    function renderCards(id, items){ const t=document.getElementById(id); if(t) t.innerHTML=items.map(productCard).join(''); }
+
+    function renderShopFilters(){
+      const opts=['All',...categories];
+      document.getElementById('shopFilters').innerHTML=opts.map(o=>`
+        <button onclick="setShopFilter('${o}')" class="rounded-full border px-5 py-2 text-[11px] uppercase tracking-[0.18em] transition ${shopFilter===o?'border-white bg-white text-black':'border-white/15 bg-white/[0.02] text-white/70 hover:border-white/30'}">${o}</button>`).join('');
+    }
+    function setShopFilter(f){ shopFilter=f; renderShopFilters();
+      renderCards('allProducts', f==='All'?products:products.filter(p=>p.category===f)); }
+
+    function renderCategoryCards(){
+      document.getElementById('homeCategories').innerHTML=categories.map(cat=>{
+        const p=products.find(x=>x.category===cat);
+        return `<button class="line-card text-left transition" onclick="openCollection('${cat}')">
+          <div class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]">
+            <div class="relative aspect-[4/5] overflow-hidden" style="${grad(p.c1,p.c2)}">
+              <span class="wm absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem]">${cat.charAt(0)}</span>
+            </div>
+            <div class="p-5"><h3 class="text-xl font-semibold">${cat}</h3>
+            <span class="mt-2 inline-flex items-center gap-2 text-sm text-white/60">Shop ${cat} →</span></div>
+          </div></button>`;
+      }).join('');
+    }
+    function renderCollectionCards(){
+      document.getElementById('collectionCards').innerHTML=categories.map((cat,i)=>{
+        const p=products.find(x=>x.category===cat);
+        return `<button class="line-card text-left transition" onclick="openCollection('${cat}')">
+          <div class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]">
+            <div class="aspect-[16/11] p-8" style="${grad(p.c1,p.c2)}">
+              <div class="flex h-full flex-col justify-between rounded-[1.5rem] border border-white/10 bg-black/25 p-6">
+                <div><p class="text-[11px] uppercase tracking-[0.28em] text-white/55">Line 0${i+1}</p>
+                <h3 class="mt-4 text-3xl font-semibold md:text-4xl">${cat}</h3></div>
+                <div class="flex items-center gap-2 text-sm font-medium"><span>Open Collection</span><span>→</span></div>
+              </div>
+            </div>
+          </div></button>`;
+      }).join('');
+    }
+    function openCollection(cat){
+      document.getElementById('collectionTitle').textContent=cat;
+      renderCards('collectionProducts', products.filter(p=>p.category===cat));
+      showPage('collection');
+    }
+
+    function openProduct(slug){
+      currentProduct=products.find(p=>p.slug===slug)||products[0];
+      currentImageIndex=0; currentSize=currentProduct.sizes[0]; currentQty=1;
+      renderProduct(); showPage('product');
+    }
+    function renderProduct(){
+      const p=currentProduct, img=p.images[currentImageIndex];
+      document.getElementById('productCategory').textContent=p.category;
+      document.getElementById('productTitle').textContent=p.title;
+      document.getElementById('productPrice').textContent=fmt(p.price);
+      document.getElementById('productDesc').textContent=p.desc;
+      const main=document.getElementById('productMainImage');
+      main.style.cssText='position:relative;'+grad(img.c1,img.c2);
+      main.className='relative h-[64vw] max-h-[560px] sm:h-[480px] lg:h-[560px] w-full rounded-[1.5rem] flex items-center justify-center snake-border glow';
+      document.getElementById('productMainMark').textContent=p.title.charAt(0);
+      document.getElementById('productQty').textContent=currentQty;
+      document.getElementById('productThumbs').innerHTML=p.images.map((im,i)=>`
+        <button onclick="setImage(${i})" class="overflow-hidden rounded-[1.25rem] border p-3 text-left transition ${i===currentImageIndex?'snake-border':''}" style="${grad(im.c1,im.c2)};border-color:${i===currentImageIndex?'rgba(255,255,255,.10)':'rgba(255,255,255,.12)'}">
+          <div class="flex h-32 items-center justify-center"><span class="wm text-5xl">${p.title.charAt(0)}</span></div>
+          <p class="mt-2 text-sm font-medium text-white/85">${im.label}</p>
+        </button>`).join('');
+      document.getElementById('productSizes').innerHTML=p.sizes.map(s=>`
+        <button onclick="setSize('${s}')" class="rounded-2xl border px-5 py-3 text-sm font-medium transition ${currentSize===s?'snake-border':''}" style="border-color:${currentSize===s?'rgba(212,175,55,.35)':'rgba(255,255,255,.1)'};background:${currentSize===s?'rgba(212,175,55,.13)':'rgba(255,255,255,.02)'}">${s}</button>`).join('');
+      document.getElementById('productDetails').innerHTML=p.details.map(d=>`
+        <div class="flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full" style="background:${p.accent}"></span><span>${d}</span></div>`).join('');
+    }
+    function setImage(i){ currentImageIndex=i; renderProduct(); }
+    function prevImage(){ currentImageIndex=(currentImageIndex-1+currentProduct.images.length)%currentProduct.images.length; renderProduct(); }
+    function nextImage(){ currentImageIndex=(currentImageIndex+1)%currentProduct.images.length; renderProduct(); }
+    function setSize(s){ currentSize=s; renderProduct(); }
+    function changeQuantity(d){ currentQty=Math.max(1,currentQty+d); renderProduct(); }
+
+    function addToBag(){
+      const p=currentProduct;
+      const ex=bag.find(i=>i.slug===p.slug&&i.size===currentSize);
+      if(ex) ex.quantity+=currentQty;
+      else bag.push({slug:p.slug,title:p.title,size:currentSize,quantity:currentQty,price:p.price,c1:p.c1,c2:p.c2});
+      renderBag(); toggleBag(true); showToast(p.title+' added');
+    }
+    function buyNow(){ addToBag(); toggleBag(false); showPage('checkout'); }
+    function toggleBag(open){
+      document.getElementById('bagOverlay').classList.toggle('hidden',!open);
+      document.getElementById('bagDrawer').classList.toggle('translate-x-full',!open);
+    }
+    function updateBagQuantity(i,d){ bag[i].quantity=Math.max(1,bag[i].quantity+d);
+      if(bag[i].quantity<=0) bag.splice(i,1); renderBag(); renderCheckout(); }
+    function removeBag(i){ bag.splice(i,1); renderBag(); renderCheckout(); }
+    function renderBag(){
+      document.getElementById('bagCount').textContent=bag.reduce((s,i)=>s+i.quantity,0);
+      const sub=bag.reduce((s,i)=>s+i.price*i.quantity,0);
+      document.getElementById('bagSubtotal').textContent=fmt(sub);
+      document.getElementById('bagItems').innerHTML = bag.length ? bag.map((it,i)=>`
+        <div class="flex gap-4 py-5">
+          <div class="h-20 w-16 flex-shrink-0 rounded-lg" style="${grad(it.c1,it.c2)}"></div>
+          <div class="flex-1">
+            <div class="flex items-start justify-between gap-3">
+              <div><h3 class="text-sm font-medium text-white">${it.title}</h3><p class="mt-0.5 text-xs text-white/45">Size ${it.size}</p></div>
+              <p class="text-sm text-white/90">${fmt(it.price*it.quantity)}</p>
+            </div>
+            <div class="mt-3 flex items-center gap-5">
+              <div class="flex items-center gap-3 text-white/70">
+                <button class="text-base leading-none hover:text-white" onclick="updateBagQuantity(${i},-1)">−</button>
+                <span class="text-sm tabular-nums">${it.quantity}</span>
+                <button class="text-base leading-none hover:text-white" onclick="updateBagQuantity(${i},1)">+</button>
+              </div>
+              <button class="text-xs text-white/35 underline-offset-2 hover:text-white/70 hover:underline" onclick="removeBag(${i})">Remove</button>
+            </div>
+          </div>
+        </div>`).join('') : '<p class="py-16 text-center text-sm text-white/40">Your bag is empty.</p>';
+    }
+    function renderCheckout(){
+      const sub=bag.reduce((s,i)=>s+i.price*i.quantity,0);
+      document.getElementById('checkoutSubtotal').textContent=fmt(sub);
+      document.getElementById('checkoutItems').innerHTML = bag.length ? bag.map(it=>`
+        <div class="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+          <div class="h-20 w-16 overflow-hidden rounded-xl" style="${grad(it.c1,it.c2)}"></div>
+          <div class="flex-1"><p class="font-medium text-white">${it.title}</p><p class="mt-1 text-sm text-white/55">Size ${it.size} · Qty ${it.quantity}</p></div>
+          <p class="text-white">${fmt(it.price*it.quantity)}</p></div>`).join('') : '<div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-white/65">Your bag is empty.</div>';
+    }
+    async function checkoutWithStripe(){
+      if(!bag.length){ showToast('Your bag is empty'); return; }
+      const btn=document.getElementById('payBtn'), err=document.getElementById('payError');
+      err.classList.add('hidden'); btn.disabled=true; btn.textContent='Redirecting…';
+      try{
+        const res=await fetch(CHECKOUT_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({ items: bag.map(i=>({title:i.title,size:i.size,price:i.price,quantity:i.quantity})) }) });
+        if(!res.ok) throw new Error('bad status');
+        const data=await res.json();
+        if(data.url){ window.location.href=data.url; return; }      // Checkout Session URL (preferred)
+        const stripe=Stripe(STRIPE_PUBLISHABLE_KEY);                 // fallback: redirect by session id
+        const r=await stripe.redirectToCheckout({ sessionId:data.id });
+        if(r&&r.error) throw r.error;
+      }catch(e){ btn.disabled=false; btn.textContent='Pay with Stripe'; err.classList.remove('hidden'); }
+    }
+    function handleReturn(){
+      const q=new URLSearchParams(location.search);
+      if(q.get('paid')==='1'){ bag=[]; renderBag(); renderCheckout(); showPage('checkout');
+        document.getElementById('orderNotice').classList.remove('hidden');
+        history.replaceState({},'',location.pathname); }
+    }
+
+    /* ---- BUSINESS ---- */
+    function setB2BType(type){
+      const on='bg-white text-black', samp=document.getElementById('tabSamples'), bulk=document.getElementById('tabBulk');
+      samp.className='flex-1 rounded-xl px-4 py-3 text-sm font-medium transition '+(type==='samples'?on:'text-white/60');
+      bulk.className='flex-1 rounded-xl px-4 py-3 text-sm font-medium transition '+(type==='bulk'?on:'text-white/60');
+      const qty=document.getElementById('b2b_qty');
+      qty.innerHTML = type==='samples'
+        ? '<option>Samples only (1–5 units)</option>'
+        : '<option>25–100 units</option><option>100–500 units</option><option>500–1,000 units</option><option>1,000+ units</option>';
+    }
+    function valOf(id){ return (document.getElementById(id).value||'').trim(); }
+    async function submitB2B(){
+      const name=valOf('b2b_name'), company=valOf('b2b_company'), email=valOf('b2b_email'),
+            phone=valOf('b2b_phone'), products=valOf('b2b_products'), qty=valOf('b2b_qty'), notes=valOf('b2b_notes');
+      if(!name||!email||!email.includes('@')){ showToast('Add your name and a valid email'); return; }
+      const type = document.getElementById('tabSamples').classList.contains('bg-white') ? 'Sample request' : 'Bulk order enquiry';
+      const subject = type+' — '+(company||name);
+      const body = 'Type: '+type+'\nName: '+name+'\nCompany: '+company+'\nEmail: '+email+'\nPhone: '+phone
+                 +'\nProducts: '+products+'\nQuantity: '+qty+'\n\nDetails:\n'+notes;
+      if(FORMSPREE_ENDPOINT){
+        try{
+          const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST',
+            headers:{'Accept':'application/json','Content-Type':'application/json'},
+            body:JSON.stringify({ type,name,company,email,phone,products,quantity:qty,details:notes, _subject:subject }) });
+          if(res.ok){ document.getElementById('b2bNotice').classList.remove('hidden'); showToast('Enquiry sent'); return; }
+        }catch(e){}
+      }
+      window.location.href='mailto:'+ENQUIRY_EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+      document.getElementById('b2bNotice').classList.remove('hidden'); showToast('Opening your email…');
+    }
+    function goBusinessFor(){ showPage('business'); setB2BType('bulk');
+      document.getElementById('b2b_notes').value='Interested in: '+currentProduct.title; }
+    function goBusinessType(t){ showPage('business'); setB2BType(t); }
+
+    function subscribe(){ const e=document.getElementById('newsEmail').value.trim();
+      if(e&&e.includes('@')){ showToast('Subscribed'); document.getElementById('newsEmail').value=''; } else showToast('Enter a valid email'); }
+
+    let toastTimer;
+    function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg;
+      t.style.opacity='1'; t.classList.remove('translate-y-24');
+      clearTimeout(toastTimer); toastTimer=setTimeout(()=>{t.style.opacity='0'; t.classList.add('translate-y-24');},2200); }
+
+    function renderCountdown(){
+      const diff=Math.max(0,launchDate.getTime()-Date.now());
+      const d=Math.floor(diff/86400000), h=Math.floor(diff/3600000%24), m=Math.floor(diff/60000%60), s=Math.floor(diff/1000%60);
+      const pad=n=>String(n).padStart(2,'0');
+      document.getElementById('countdown').innerHTML=
+        `<span>${pad(d)}</span><span class="text-white/35">D</span><span>${pad(h)}</span><span class="text-white/35">H</span><span>${pad(m)}</span><span class="text-white/35">M</span><span>${pad(s)}</span><span class="text-white/35">S</span>`;
+    }
+
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') toggleBag(false); });
+
+    renderCards('homeProducts', products.slice(0,4));
+    renderShopFilters(); setShopFilter('All');
+    renderCategoryCards(); renderCollectionCards();
+    setB2BType('samples'); renderBag(); renderCheckout();
+    renderCountdown(); setInterval(renderCountdown,1000);
+    handleReturn();
+    showPage('home');
+  </script>
+</body>
+</html>
