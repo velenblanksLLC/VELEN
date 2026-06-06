@@ -18,6 +18,7 @@ module.exports = async (req, res) => {
         product_data: {
           name: item.title || item.name || 'Product',
           description: item.size ? `Size: ${item.size}` : undefined,
+          tax_code: 'txcd_99999999',
         },
         unit_amount: Math.round((item.price || 0) * 100),
       },
@@ -28,6 +29,7 @@ module.exports = async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
+      automatic_tax: { enabled: true },
       success_url: `${req.headers.origin || 'https://www.velenblanks.com'}/?success=true`,
       cancel_url: `${req.headers.origin || 'https://www.velenblanks.com'}/?canceled=true`,
       shipping_address_collection: {
