@@ -16,12 +16,12 @@ module.exports = async (req, res) => {
       price_data: {
         currency: 'usd',
         product_data: {
-          name: item.name,
+          name: item.title || item.name || 'Product',
           description: item.size ? `Size: ${item.size}` : undefined,
         },
-        unit_amount: Math.round(item.price * 100),
+        unit_amount: Math.round((item.price || 0) * 100),
       },
-      quantity: item.quantity,
+      quantity: item.quantity || 1,
     }));
 
     const session = await stripe.checkout.sessions.create({
