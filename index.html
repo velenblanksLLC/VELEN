@@ -394,7 +394,8 @@
 
     const categories = ['Shirts','Pants','Bags','Hats'];
 
-    let bag = [];
+    let bag = (() => { try { return JSON.parse(localStorage.getItem('velen_bag') || '[]'); } catch(e) { return []; } })();
+    const saveBag = () => { try { localStorage.setItem('velen_bag', JSON.stringify(bag)); } catch(e) {} };
     let currentProduct = products[0];
     let currentImageIndex = 0, currentSize = products[0].sizes[0], currentQty = 1;
     let shopFilter = 'All';
@@ -516,7 +517,7 @@
       const ex=bag.find(i=>i.slug===p.slug&&i.size===currentSize);
       if(ex) ex.quantity+=currentQty;
       else bag.push({slug:p.slug,title:p.title,size:currentSize,quantity:currentQty,price:p.price,c1:p.c1,c2:p.c2});
-      renderBag(); toggleBag(true); showToast(p.title+' added');
+      renderBag(); saveBag(); toggleBag(true); showToast(p.title+' added');
     }
     function buyNow(){ addToBag(); toggleBag(false); showPage('checkout'); }
     function toggleBag(open){
@@ -524,8 +525,8 @@
       document.getElementById('bagDrawer').classList.toggle('translate-x-full',!open);
     }
     function updateBagQuantity(i,d){ bag[i].quantity=Math.max(1,bag[i].quantity+d);
-      if(bag[i].quantity<=0) bag.splice(i,1); renderBag(); renderCheckout(); }
-    function removeBag(i){ bag.splice(i,1); renderBag(); renderCheckout(); }
+      if(bag[i].quantity<=0) bag.splice(i,1); renderBag(); saveBag(); renderCheckout(); }
+    function removeBag(i){ bag.splice(i,1); renderBag(); saveBag(); renderCheckout(); }
     function renderBag(){
       document.getElementById('bagCount').textContent=bag.reduce((s,i)=>s+i.quantity,0);
       const sub=bag.reduce((s,i)=>s+i.price*i.quantity,0);
@@ -638,7 +639,7 @@
     setB2BType('samples'); renderBag(); renderCheckout();
     renderCountdown(); setInterval(renderCountdown,1000);
     handleReturn();
-    showPage('home');
+    showPage((() => { try { return sessionStorage.getItem('velen_page') || 'home'; } catch(e) { return 'home'; } })());
   </script>
 </body>
 </html>
