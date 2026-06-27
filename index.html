@@ -91,7 +91,7 @@
               <button class="h-12 rounded-full bg-white px-8 font-medium text-black hover:bg-white/90" onclick="showPage('shop')">Shop the Drop</button>
               <button class="h-12 rounded-full border border-white/20 bg-transparent px-8 text-white hover:bg-white/10" onclick="showPage('business')">Bulk &amp; Wholesale</button>
             </div>
-            <p class="mt-8 text-[11px] uppercase tracking-[0.35em] text-white/62">Free shipping over $150 · Samples ship in 48h</p>
+            <p class="mt-8 text-[11px] uppercase tracking-[0.35em] text-white/62">New collection · Samples ship in 48h</p>
           </div>
         </div>
       </section>
@@ -115,7 +115,7 @@
             <div class="h-full overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-10">
               <p class="text-[11px] uppercase tracking-[0.28em] text-white/45">For Individuals</p>
               <h3 class="mt-4 text-3xl font-semibold md:text-4xl">Shop direct</h3>
-              <p class="mt-4 max-w-md text-sm leading-6 text-white/62">Browse the full catalog, build your bag, and check out in minutes. Free shipping over $150.</p>
+              <p class="mt-4 max-w-md text-sm leading-6 text-white/62">Browse the full catalog, build your bag, and check out in minutes. Coming soon.</p>
               <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium">Start shopping <span>→</span></span>
             </div>
           </button>
@@ -206,8 +206,7 @@
               </div>
             </div>
             <div class="flex flex-col gap-4 sm:flex-row">
-              <button id="addBagBtn" class="h-12 flex-1 rounded-2xl btn-gold font-medium" onclick="addToBag()">Add to Bag</button>
-              <button id="buyNowBtn" class="h-12 flex-1 rounded-2xl border border-white/20 bg-transparent text-white hover:bg-white/10" onclick="buyNow()">Buy Now</button>
+              <button id="addBagBtn" class="h-12 flex-1 rounded-2xl btn-gold font-medium opacity-60 cursor-not-allowed" disabled>Coming Soon</button>
             </div>
             <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
               <p class="text-sm uppercase tracking-[0.22em] text-white/45">Need it in volume?</p>
@@ -241,7 +240,7 @@
             <input id="b2b_email" placeholder="Email" class="b2b-input" />
             <input id="b2b_phone" placeholder="Phone (optional)" class="b2b-input" />
             <select id="b2b_products" class="b2b-input">
-              <option>Shirts</option><option>Pants / Trousers</option><option>Bags</option>
+              <option>Shirts</option><option>Hoodies</option><option>Joggers</option><option>Bags</option>
               <option>Hats</option><option>Mixed / Full range</option>
             </select>
             <select id="b2b_qty" class="b2b-input">
@@ -313,7 +312,8 @@
         <p class="text-[11px] uppercase tracking-[0.22em] text-white/45">Shop</p>
         <div class="mt-4 flex flex-col gap-2 text-sm text-white/70">
           <button class="text-left hover:text-white" onclick="openCollection('Shirts')">Shirts</button>
-          <button class="text-left hover:text-white" onclick="openCollection('Pants')">Pants</button>
+          <button class="text-left hover:text-white" onclick="openCollection('Hoodies')">Hoodies</button>
+          <button class="text-left hover:text-white" onclick="openCollection('Joggers')">Joggers</button>
           <button class="text-left hover:text-white" onclick="openCollection('Bags')">Bags</button>
           <button class="text-left hover:text-white" onclick="openCollection('Hats')">Hats</button>
         </div>
@@ -334,7 +334,7 @@
         </div>
       </div>
     </div>
-    <div class="border-t border-white/10 py-5 text-center text-[11px] uppercase tracking-[0.18em] text-white/40">© 2026 VELEN Blanks · velenblanks.com · All prices USD</div>
+    <div class="border-t border-white/10 py-5 text-center text-[11px] uppercase tracking-[0.18em] text-white/40">© 2026 VELEN Blanks · velenblanks.com</div>
   </footer>
 
   <!-- BAG DRAWER -->
@@ -373,26 +373,29 @@
     const sizesFor = (cat)=> cat==='Bags' ? ['One Size'] : cat==='Hats' ? ['S/M','L/XL','One Size'] : ['S','M','L','XL'];
 
     const products = [
-      {slug:'regular-shirt', title:'Regular Shirt', price:1, category:'Shirts', c1:'#a0b0c0', c2:'#3a4a5a', tag:'', desc:'A simple, classic regular shirt.', details:['Classic fit','100% cotton','Easy care']},
-      {slug:'brushed-oxford', title:'Brushed Oxford Shirt', price:128, category:'Shirts', c1:'#cbb89a', c2:'#564633', tag:'New', desc:'A clean brushed-cotton oxford with a relaxed modern fit and tonal stitching.', details:['Heavyweight brushed cotton','Mother-of-pearl buttons','Relaxed modern fit','Tonal embroidery']},
-      {slug:'linen-camp', title:'Linen Camp Collar', price:142, category:'Shirts', c1:'#dcd3c2', c2:'#6f6753', desc:'Open camp collar in airy washed linen for an elevated warm-weather look.', details:['100% washed linen','Open camp collar','Boxy drape','Coconut buttons']},
-      {slug:'flannel-overshirt', title:'Heavy Flannel Overshirt', price:168, category:'Shirts', c1:'#6f5b4a', c2:'#221b14', tag:'Best seller', desc:'A heavyweight brushed flannel built to layer as a shirt or light jacket.', details:['Brushed double-weave','Chest utility pockets','Layering fit','Matte horn buttons']},
-      {slug:'poplin-tunic', title:'Poplin Tunic', price:118, category:'Shirts', c1:'#e3ddd0', c2:'#7a735f', desc:'A long-line poplin tunic with a soft hand and minimal branding.', details:['Crisp cotton poplin','Long-line cut','Side vents','Hidden placket']},
-      {slug:'pleated-wool', title:'Pleated Wool Trouser', price:188, category:'Pants', c1:'#4a463d', c2:'#16140f', tag:'New', desc:'Single-pleat wool-blend trouser with a tailored drape and clean break.', details:['Wool-blend suiting','Single forward pleat','Tailored taper','Hook-and-bar closure']},
-      {slug:'carpenter-canvas', title:'Carpenter Canvas Pant', price:156, category:'Pants', c1:'#a98e63', c2:'#4d3f26', desc:'A relaxed carpenter pant in rugged organic canvas with utility detailing.', details:['Organic cotton canvas','Carpenter loops','Relaxed straight leg','Triple-stitched seams']},
-      {slug:'tapered-linen', title:'Tapered Linen Trouser', price:164, category:'Pants', c1:'#d8cdb6', c2:'#6f654c', desc:'A breathable tapered linen trouser with a drawstring waist.', details:['Garment-washed linen','Drawcord waist','Tapered leg','Slant pockets']},
-      {slug:'selvedge-denim', title:'Relaxed Selvedge Denim', price:198, category:'Pants', c1:'#41506b', c2:'#161d29', tag:'Best seller', desc:'Relaxed selvedge denim in a raw indigo that fades beautifully with wear.', details:['14oz selvedge denim','Raw indigo','Relaxed straight leg','Branded leather patch']},
-      {slug:'waxed-tote', title:'Waxed Tote', price:174, category:'Bags', c1:'#7a6347', c2:'#291f12', desc:'A structured waxed-canvas tote with leather handles and a roomy interior.', details:['Waxed cotton canvas','Full-grain leather handles','Interior zip pocket','Magnetic top closure']},
-      {slug:'leather-weekender', title:'Leather Weekender', price:340, category:'Bags', c1:'#6e4d34', c2:'#2a1c10', tag:'Premium', desc:'A full-grain leather weekender sized for two days away.', details:['Full-grain leather','Brass hardware','Shoe compartment','Detachable strap']},
-      {slug:'field-crossbody', title:'Field Crossbody', price:138, category:'Bags', c1:'#8a7c64', c2:'#393326', desc:'A compact everyday crossbody in water-resistant ripstop.', details:['Water-resistant ripstop','Adjustable webbing strap','Three compartments','Low-profile fit']},
-      {slug:'felted-cap', title:'Felted Wool Cap', price:78, category:'Hats', c1:'#5a5246', c2:'#201d18', desc:'A structured six-panel cap in pressed felted wool.', details:['Felted wool','Structured crown','Antique-brass buckle','Satin lining']},
-      {slug:'canvas-camp-hat', title:'Canvas Camp Hat', price:64, category:'Hats', c1:'#b6a684', c2:'#5f5538', tag:'New', desc:'A packable wide-brim camp hat in washed cotton canvas.', details:['Washed cotton canvas','Packable brim','Vented eyelets','Adjustable chin cord']},
-      {slug:'watch-beanie', title:'Knit Watch Beanie', price:52, category:'Hats', c1:'#7d8473', c2:'#363b2f', desc:'A ribbed merino watch beanie with a folded cuff.', details:['Extra-fine merino','Ribbed knit','Folded cuff','Woven label']},
+      {slug:'regular-shirt', title:'Regular Cotton Shirt', category:'Shirts', c1:'#a0b0c0', c2:'#3a4a5a', tag:'', soon:true, desc:'A simple, classic cotton shirt with an everyday fit.', details:['Classic fit','100% cotton','Easy care']},
+      {slug:'brushed-oxford', title:'Brushed Cotton Oxford', category:'Shirts', c1:'#cbb89a', c2:'#564633', tag:'New', soon:true, desc:'A clean brushed-cotton oxford with a relaxed modern fit and tonal stitching.', details:['100% brushed cotton','Mother-of-pearl buttons','Relaxed modern fit','Tonal embroidery']},
+      {slug:'camp-collar', title:'Cotton Camp Collar', category:'Shirts', c1:'#dcd3c2', c2:'#6f6753', tag:'', soon:true, desc:'An open camp collar in airy washed cotton for an elevated warm-weather look.', details:['100% washed cotton','Open camp collar','Boxy drape','Coconut buttons']},
+      {slug:'cotton-overshirt', title:'Heavy Cotton Overshirt', category:'Shirts', c1:'#6f5b4a', c2:'#221b14', tag:'Best seller', soon:true, desc:'A heavyweight brushed-cotton overshirt built to layer as a shirt or light jacket.', details:['Heavyweight brushed cotton','Chest utility pockets','Layering fit','Matte horn buttons']},
+      {slug:'poplin-tunic', title:'Cotton Poplin Tunic', category:'Shirts', c1:'#e3ddd0', c2:'#7a735f', tag:'', soon:true, desc:'A long-line cotton poplin tunic with a soft hand and minimal branding.', details:['Crisp cotton poplin','Long-line cut','Side vents','Hidden placket']},
+      {slug:'classic-hoodie', title:'Classic Cotton Hoodie', category:'Hoodies', c1:'#4a463d', c2:'#16140f', tag:'New', soon:true, desc:'A heavyweight pullover hoodie in soft loopback cotton with a roomy hood.', details:['100% cotton fleece','Double-layer hood','Kangaroo pocket','Ribbed cuffs']},
+      {slug:'zip-hoodie', title:'Cotton Zip Hoodie', category:'Hoodies', c1:'#5a5246', c2:'#201d18', tag:'', soon:true, desc:'A full-zip cotton hoodie with a clean drape and matte hardware.', details:['Heavyweight cotton fleece','Full-length zip','Split kangaroo pockets','Relaxed fit']},
+      {slug:'boxy-hoodie', title:'Boxy Cotton Hoodie', category:'Hoodies', c1:'#8a7c64', c2:'#393326', tag:'Best seller', soon:true, desc:'A boxy, cropped cotton hoodie with dropped shoulders and a soft brushed interior.', details:['Brushed cotton terry','Dropped shoulders','Boxy crop','Ribbed hem']},
+      {slug:'classic-jogger', title:'Classic Cotton Jogger', category:'Joggers', c1:'#4a463d', c2:'#16140f', tag:'New', soon:true, desc:'A tapered cotton jogger with a tailored drape and clean break.', details:['100% cotton fleece','Elastic drawcord waist','Tapered leg','Ribbed cuffs']},
+      {slug:'carpenter-jogger', title:'Carpenter Cotton Jogger', category:'Joggers', c1:'#a98e63', c2:'#4d3f26', tag:'', soon:true, desc:'A relaxed cotton jogger in rugged cotton canvas with utility detailing.', details:['Organic cotton canvas','Carpenter loops','Relaxed straight leg','Triple-stitched seams']},
+      {slug:'tapered-jogger', title:'Tapered Cotton Jogger', category:'Joggers', c1:'#d8cdb6', c2:'#6f654c', tag:'', soon:true, desc:'A breathable tapered cotton jogger with a drawstring waist.', details:['Garment-washed cotton','Drawcord waist','Tapered leg','Slant pockets']},
+      {slug:'relaxed-jogger', title:'Relaxed Cotton Jogger', category:'Joggers', c1:'#41506b', c2:'#161d29', tag:'Best seller', soon:true, desc:'A relaxed cotton jogger that softens and fades beautifully with wear.', details:['Heavyweight cotton','Relaxed straight leg','Elastic waistband','Branded woven patch']},
+      {slug:'leather-tote', title:'Leather Tote', category:'Bags', c1:'#7a6347', c2:'#291f12', tag:'', soon:true, desc:'A structured full-grain leather tote with a roomy interior.', details:['Full-grain leather','Leather handles','Interior zip pocket','Magnetic top closure']},
+      {slug:'leather-weekender', title:'Leather Weekender', category:'Bags', c1:'#6e4d34', c2:'#2a1c10', tag:'Premium', soon:true, desc:'A full-grain leather weekender sized for two days away.', details:['Full-grain leather','Brass hardware','Shoe compartment','Detachable strap']},
+      {slug:'leather-crossbody', title:'Leather Crossbody', category:'Bags', c1:'#8a7c64', c2:'#393326', tag:'', soon:true, desc:'A compact everyday crossbody in supple full-grain leather.', details:['Full-grain leather','Adjustable leather strap','Three compartments','Low-profile fit']},
+      {slug:'cotton-cap', title:'Cotton Six-Panel Cap', category:'Hats', c1:'#5a5246', c2:'#201d18', tag:'', soon:true, desc:'A structured six-panel cap in washed cotton twill.', details:['100% cotton twill','Structured crown','Antique-brass buckle','Cotton lining']},
+      {slug:'cotton-camp-hat', title:'Cotton Camp Hat', category:'Hats', c1:'#b6a684', c2:'#5f5538', tag:'New', soon:true, desc:'A packable wide-brim camp hat in washed cotton canvas.', details:['Washed cotton canvas','Packable brim','Vented eyelets','Adjustable chin cord']},
+      {slug:'cotton-beanie', title:'Cotton Watch Beanie', category:'Hats', c1:'#7d8473', c2:'#363b2f', tag:'', soon:true, desc:'A ribbed cotton watch beanie with a folded cuff.', details:['100% cotton knit','Ribbed knit','Folded cuff','Woven label']}
     ];
     products.forEach(p=>{ p.accent='#d4af37'; p.sizes=sizesFor(p.category);
       p.images=[{label:'Front View',c1:p.c1,c2:p.c2},{label:'Back View',c1:p.c2,c2:p.c1}]; });
 
-    const categories = ['Shirts','Pants','Bags','Hats'];
+    const categories = ['Shirts','Hoodies','Joggers','Bags','Hats'];
 
     let bag = (() => { try { return JSON.parse(localStorage.getItem('velen_bag') || '[]'); } catch(e) { return []; } })();
     const saveBag = () => { try { localStorage.setItem('velen_bag', JSON.stringify(bag)); } catch(e) {} };
@@ -426,10 +429,12 @@
         <div class="h-full overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] transition hover:border-white/20 hover:bg-white/[0.05]">
           <div class="relative aspect-[4/5] overflow-hidden" style="${grad(p.c1,p.c2)}">
             ${p.tag?`<span class="absolute left-4 top-4 rounded-full bg-[#d4af37] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-black">${p.tag}</span>`:''}
+            <span class="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">Coming Soon</span>
+            
             <span class="wm absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[6rem]">${p.title.charAt(0)}</span>
           </div>
           <div class="space-y-3 p-6">
-            <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-white/45"><span>${p.category}</span><span>${fmt(p.price)}</span></div>
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-white/45"><span>${p.category}</span><span>Coming Soon</span></div>
             <h3 class="text-2xl font-semibold text-white">${p.title}</h3>
             <p class="text-sm leading-6 text-white/62">${p.desc}</p>
             <div class="flex items-center gap-2 pt-2 text-sm font-medium text-white"><span>Open Product</span><span>→</span></div>
@@ -513,13 +518,14 @@
     function changeQuantity(d){ currentQty=Math.max(1,currentQty+d); renderProduct(); }
 
     function addToBag(){
+      showToast("Coming soon"); return;
       const p=currentProduct;
       const ex=bag.find(i=>i.slug===p.slug&&i.size===currentSize);
       if(ex) ex.quantity+=currentQty;
       else bag.push({slug:p.slug,title:p.title,size:currentSize,quantity:currentQty,price:p.price,c1:p.c1,c2:p.c2});
       renderBag(); saveBag(); toggleBag(true); showToast(p.title+' added');
     }
-    function buyNow(){ addToBag(); toggleBag(false); showPage('checkout'); }
+    function buyNow(){ showToast("Coming soon"); return; }
     function toggleBag(open){
       document.getElementById('bagOverlay').classList.toggle('hidden',!open);
       document.getElementById('bagDrawer').classList.toggle('translate-x-full',!open);
@@ -537,7 +543,7 @@
           <div class="flex-1">
             <div class="flex items-start justify-between gap-3">
               <div><h3 class="text-sm font-medium text-white">${it.title}</h3><p class="mt-0.5 text-xs text-white/45">Size ${it.size}</p></div>
-              <p class="text-sm text-white/90">${fmt(it.price*it.quantity)}</p>
+              <p class="text-sm text-white/90"></p>
             </div>
             <div class="mt-3 flex items-center gap-5">
               <div class="flex items-center gap-3 text-white/70">
@@ -557,7 +563,7 @@
         <div class="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
           <div class="h-20 w-16 overflow-hidden rounded-xl" style="${grad(it.c1,it.c2)}"></div>
           <div class="flex-1"><p class="font-medium text-white">${it.title}</p><p class="mt-1 text-sm text-white/55">Size ${it.size} · Qty ${it.quantity}</p></div>
-          <p class="text-white">${fmt(it.price*it.quantity)}</p></div>`).join('') : '<div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-white/65">Your bag is empty.</div>';
+          <p class="text-white"></p></div>`).join('') : '<div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-white/65">Your bag is empty.</div>';
     }
     async function checkoutWithStripe(){
       if(!bag.length){ showToast('Your bag is empty'); return; }
