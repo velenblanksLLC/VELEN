@@ -410,7 +410,7 @@
 
     /* ===== WHERE ENQUIRIES GO ===== */
     const ENQUIRY_EMAIL = 'velenblanks@gmail.com';
-    const FORMSPREE_ENDPOINT = ''; // optional: paste a Formspree URL to auto-email; otherwise opens the visitor's mail app to ENQUIRY_EMAIL
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdargjqy'; // optional: paste a Formspree URL to auto-email; otherwise opens the visitor's mail app to ENQUIRY_EMAIL
     /* ============================== */
 
     const fmt = v => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
@@ -494,7 +494,7 @@
       const p=currentProduct, img=p.images[currentImageIndex];
       document.getElementById('productCategory').textContent=p.category;
       document.getElementById('productTitle').textContent=p.title;
-      document.getElementById('productPrice').textContent=fmt(p.price);
+      document.getElementById('productPrice').textContent = 'Coming Soon';
       document.getElementById('productDesc').textContent=p.desc;
       const main=document.getElementById('productMainImage');
       main.style.cssText='position:relative;'+grad(img.c1,img.c2);
